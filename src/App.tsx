@@ -6,6 +6,7 @@ function App() {
     { suit: string; value: string; revealed: boolean }[]
   >([]);
   const [gameEnd, setGameEnd] = useState(true);
+  const [exploreOptions, setExploreOptions] = useState(false);
 
   const suits = ["♠", "♥", "♦", "♣"];
   const values = [
@@ -44,7 +45,7 @@ function App() {
     setDeck(cards);
   }
 
-  function explore() {
+  function lookAround() {
     if (!deck[0].revealed) {
       if (!deck[1].revealed) {
         setDeck(
@@ -62,11 +63,18 @@ function App() {
     }
   }
 
+  function explore(value: number) {
+    setDeck((prev) => {
+      const toBottom = prev.slice(0, value);
+      const newTop = prev.slice(value, deck.length);
+      return [...newTop, ...toBottom];
+    });
+  }
+
   function startGame() {
     setGameEnd(false);
   }
 
-  console.log(deck);
   return (
     <div>
       {gameEnd && (
@@ -97,14 +105,44 @@ function App() {
                 />
               ))}
             </div>
-            <button onClick={() => explore()}>
-              Look around(reveal top card/s)
-            </button>
-            <button>Explore(move x-amount forward in deck)</button>
-            <button>Mark path(move top card to notes)</button>
-            <button>
-              Return to marked path(return card from notes to top)
-            </button>
+            <div>
+              <button onClick={() => lookAround()}>
+                Look around(reveal top card/s)
+              </button>
+              {exploreOptions ? (
+                <>
+                  <button onClick={() => setExploreOptions(false)}>
+                    Cancel
+                  </button>
+                  <button
+                    disabled={
+                      !deck[0].revealed || isNaN(parseInt(deck[0].value))
+                    }
+                    className="disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={() => explore(parseInt(deck[0].value))}
+                  >
+                    explore with first card
+                  </button>
+                  <button
+                    disabled={
+                      !deck[1].revealed || isNaN(parseInt(deck[1].value))
+                    }
+                    className="disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={() => explore(parseInt(deck[1].value))}
+                  >
+                    explore with second card
+                  </button>
+                </>
+              ) : (
+                <button onClick={() => setExploreOptions(true)}>
+                  Explore(move x-amount forward in deck)
+                </button>
+              )}
+              <button>Mark path(move top card to notes)</button>
+              <button>
+                Return to marked path(return card from notes to top)
+              </button>
+            </div>
           </div>
           <div className="flex justify-around">
             <div>
