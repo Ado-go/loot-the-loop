@@ -62,6 +62,13 @@ function App() {
           Start the game
         </button>
       )}
+      {!gameEnd && (
+        <div>
+          <div>Temple:</div>
+          <div>Notes:</div>
+          <div>Score Pile:</div>
+        </div>
+      )}
     </div>
   );
 }
