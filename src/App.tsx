@@ -157,7 +157,7 @@ function App() {
         <div className="min-h-screen flex flex-col items-center gap-20">
           <button
             onClick={() => setOpenOptions(true)}
-            className="absolute top-5 right-5"
+            className="absolute z-5 top-5 right-5"
           >
             ⚙
           </button>
