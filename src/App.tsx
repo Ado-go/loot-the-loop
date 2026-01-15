@@ -127,8 +127,11 @@ function App() {
     }
   }
 
-  if (explored && deck[0]?.revealed) {
-    evaluateLandingOnCard();
+  if (explored) {
+    setExplored(false);
+    if (deck[0]?.revealed) {
+      evaluateLandingOnCard();
+    }
   }
 
   return (
@@ -171,22 +174,14 @@ function App() {
               </button>
               <div>
                 <button
-                  disabled={
-                    !deck[0].revealed ||
-                    isNaN(parseInt(deck[0].value)) ||
-                    deck[parseInt(deck[0].value)].revealed
-                  }
+                  disabled={!deck[0].revealed || isNaN(parseInt(deck[0].value))}
                   className="disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={() => explore(parseInt(deck[0].value))}
                 >
                   explore with first card
                 </button>
                 <button
-                  disabled={
-                    !deck[1].revealed ||
-                    isNaN(parseInt(deck[1].value)) ||
-                    deck[parseInt(deck[1].value)].revealed
-                  }
+                  disabled={!deck[1].revealed || isNaN(parseInt(deck[1].value))}
                   className="disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={() => explore(parseInt(deck[1].value))}
                 >
