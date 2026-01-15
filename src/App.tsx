@@ -7,6 +7,10 @@ function App() {
   >([]);
   const [gameEnd, setGameEnd] = useState(true);
   const [exploreOptions, setExploreOptions] = useState(false);
+  const [markedOptions, setMarkedOptions] = useState(false);
+  const [markedPaths, setMarkedPaths] = useState<
+    { suit: string; value: string; revealed: boolean }[]
+  >([]);
 
   const suits = ["♠", "♥", "♦", "♣"];
   const values = [
@@ -71,6 +75,30 @@ function App() {
     });
   }
 
+  function markPath() {
+    setMarkedPaths((prev) => {
+      return [...prev, { ...deck[0] }];
+    });
+    setDeck((prev) => {
+      return prev.slice(1, prev.length);
+    });
+  }
+
+  function returnToMarkedPath(position: number) {
+    setDeck((prev) => {
+      return [{ ...markedPaths[position] }, ...prev];
+    });
+    setMarkedPaths((prev) => {
+      if (position === 0) {
+        return prev.slice(1, prev.length);
+      } else if (position === 1) {
+        return [{ ...prev[0] }, ...prev.slice(position + 1, prev.length)];
+      } else {
+        return prev.slice(0, prev.length - 1);
+      }
+    });
+  }
+
   function startGame() {
     setGameEnd(false);
   }
@@ -106,7 +134,11 @@ function App() {
               ))}
             </div>
             <div>
-              <button onClick={() => lookAround()}>
+              <button
+                className="disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={deck[0].revealed}
+                onClick={() => lookAround()}
+              >
                 Look around(reveal top card/s)
               </button>
               {exploreOptions ? (
@@ -138,15 +170,65 @@ function App() {
                   Explore(move x-amount forward in deck)
                 </button>
               )}
-              <button>Mark path(move top card to notes)</button>
-              <button>
-                Return to marked path(return card from notes to top)
+              <button
+                className="disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={
+                  markedPaths.length === 3 ||
+                  !deck[0].revealed ||
+                  isNaN(parseInt(deck[0].value))
+                }
+                onClick={() => markPath()}
+              >
+                Mark path(move top card to notes)
               </button>
+              {markedOptions ? (
+                <div>
+                  <button
+                    className="disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={markedPaths[0]?.value === undefined}
+                    onClick={() => returnToMarkedPath(0)}
+                  >
+                    Return to #1 path({markedPaths[0]?.value})
+                  </button>
+                  <button
+                    className="disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={markedPaths[1]?.value === undefined}
+                    onClick={() => returnToMarkedPath(1)}
+                  >
+                    Return to #2 path({markedPaths[1]?.value})
+                  </button>
+                  <button
+                    className="disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={markedPaths[2]?.value === undefined}
+                    onClick={() => returnToMarkedPath(2)}
+                  >
+                    Return to #3 path({markedPaths[2]?.value})
+                  </button>
+                  <button onClick={() => setMarkedOptions(false)}>
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <button onClick={() => setMarkedOptions(true)}>
+                  Return to marked path(return card from notes to top)
+                </button>
+              )}
             </div>
           </div>
           <div className="flex justify-around">
             <div>
-              <h2>Notes (3 spaces):</h2>
+              <h2>Notes ({3 - markedPaths.length} free spaces):</h2>
+              <div className="flex p-5 w-40 overflow-hidden border">
+                {markedPaths.map((path, index) => (
+                  <Card
+                    key={path.suit + path.value}
+                    suit={path.suit}
+                    value={path.value}
+                    revealed={path.revealed}
+                    position={index + 1}
+                  />
+                ))}
+              </div>
             </div>
             <div>
               <h2>Score Pile:</h2>
