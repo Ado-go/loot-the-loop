@@ -53,6 +53,14 @@ function App() {
     setDeck(cards);
   }
 
+  function resetGame() {
+    setDeck([]);
+    setMarkedPaths([]);
+    setTrinkets([]);
+    setJewels([]);
+    shuffleCards();
+  }
+
   function lookAround() {
     if (!deck[0].revealed) {
       if (!deck[1].revealed) {
@@ -272,6 +280,7 @@ function App() {
               </div>
             </div>
           </div>
+          <button onClick={() => resetGame()}>reset game</button>
         </div>
       )}
     </div>
