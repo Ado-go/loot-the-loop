@@ -148,7 +148,12 @@ function App() {
                   </button>
                   <button
                     disabled={
-                      !deck[0].revealed || isNaN(parseInt(deck[0].value))
+                      !deck[0].revealed ||
+                      isNaN(parseInt(deck[0].value)) ||
+                      (deck[parseInt(deck[0].value)].revealed &&
+                        ["J", "Q", "K"].includes(
+                          deck[parseInt(deck[0].value)].value
+                        ))
                     }
                     className="disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={() => explore(parseInt(deck[0].value))}
@@ -157,7 +162,12 @@ function App() {
                   </button>
                   <button
                     disabled={
-                      !deck[1].revealed || isNaN(parseInt(deck[1].value))
+                      !deck[1].revealed ||
+                      isNaN(parseInt(deck[1].value)) ||
+                      (deck[parseInt(deck[1].value)].revealed &&
+                        ["J", "Q", "K"].includes(
+                          deck[parseInt(deck[0].value)].value
+                        ))
                     }
                     className="disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={() => explore(parseInt(deck[1].value))}
