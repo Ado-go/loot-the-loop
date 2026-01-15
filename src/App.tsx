@@ -153,10 +153,10 @@ function App() {
         </div>
       )}
       {!gameEnd && (
-        <div className="flex flex-col gap-20">
+        <div className="min-h-screen flex flex-col items-center gap-20">
           <div>
             <h2>Temple:</h2>
-            <div className="flex p-5 w-86 overflow-hidden overflow-x-scroll border">
+            <div className="flex p-5 max-w-96 overflow-hidden overflow-x-scroll border">
               {deck.map((card, index) => (
                 <Card
                   key={card.suit + card.value}
@@ -167,15 +167,17 @@ function App() {
                 />
               ))}
             </div>
-            <div>
-              <button
-                className="disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isEnd || deck[0].revealed}
-                onClick={() => lookAround()}
-              >
-                Look around(reveal top card/s)
-              </button>
-              <div>
+            <div className="flex flex-col items-center">
+              <div className="max-w-96">
+                <button
+                  className="w-96 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isEnd || deck[0].revealed}
+                  onClick={() => lookAround()}
+                >
+                  Look around(reveal top card/s)
+                </button>
+              </div>
+              <div className=" flex max-w-96">
                 <button
                   disabled={
                     isEnd || !deck[0].revealed || isNaN(parseInt(deck[0].value))
@@ -201,35 +203,37 @@ function App() {
                     "(" + deck[1].value + ")"}
                 </button>
               </div>
-              <button
-                className="disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={
-                  isEnd ||
-                  markedPaths.length === 3 ||
-                  !deck[0].revealed ||
-                  isNaN(parseInt(deck[0].value))
-                }
-                onClick={() => markPath()}
-              >
-                Mark path(move top card to notes)
-              </button>
-              <div>
+              <div className="max-w-96">
                 <button
-                  className="disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-96 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={
+                    isEnd ||
+                    markedPaths.length === 3 ||
+                    !deck[0].revealed ||
+                    isNaN(parseInt(deck[0].value))
+                  }
+                  onClick={() => markPath()}
+                >
+                  Mark path(move top card to notes)
+                </button>
+              </div>
+              <div className="max-w-96">
+                <button
+                  className="w-96 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isEnd || markedPaths[0]?.value === undefined}
                   onClick={() => returnToMarkedPath(0)}
                 >
                   Return to #1 path({markedPaths[0]?.value})
                 </button>
                 <button
-                  className="disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-96 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isEnd || markedPaths[1]?.value === undefined}
                   onClick={() => returnToMarkedPath(1)}
                 >
                   Return to #2 path({markedPaths[1]?.value})
                 </button>
                 <button
-                  className="disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-96 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isEnd || markedPaths[2]?.value === undefined}
                   onClick={() => returnToMarkedPath(2)}
                 >
@@ -274,7 +278,7 @@ function App() {
               </div>
               <div>
                 <h3>Jewels:</h3>
-                <div className="flex p-5 w-40 overflow-hidden border">
+                <div className="flex p-5 w-40 overflow-hidden overflow-x-auto border">
                   {jewels.map((jewel, index) => (
                     <Card
                       key={jewel.suit + jewel.value}
