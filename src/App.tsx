@@ -10,6 +10,7 @@ type card = {
 function App() {
   const [deck, setDeck] = useState<card[]>([]);
   const [gameEnd, setGameEnd] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
   const [explored, setExplored] = useState(false);
   const [markedPaths, setMarkedPaths] = useState<card[]>([]);
   const [trinkets, setTrinkets] = useState<card[]>([]);
@@ -57,6 +58,7 @@ function App() {
     setMarkedPaths([]);
     setTrinkets([]);
     setJewels([]);
+    setIsEnd(false);
     shuffleCards();
   }
 
@@ -114,6 +116,7 @@ function App() {
   function evaluateLandingOnCard() {
     if (["J", "Q", "K"].includes(deck[0].value)) {
       alert("You lose");
+      setIsEnd(true);
     } else if (deck[0].value === "A") {
       setJewels((prev) => [...prev, { ...deck[0] }]);
       setDeck((prev) => prev.slice(1, prev.length));
@@ -167,21 +170,25 @@ function App() {
             <div>
               <button
                 className="disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={deck[0].revealed}
+                disabled={isEnd || deck[0].revealed}
                 onClick={() => lookAround()}
               >
                 Look around(reveal top card/s)
               </button>
               <div>
                 <button
-                  disabled={!deck[0].revealed || isNaN(parseInt(deck[0].value))}
+                  disabled={
+                    isEnd || !deck[0].revealed || isNaN(parseInt(deck[0].value))
+                  }
                   className="disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={() => explore(parseInt(deck[0].value))}
                 >
                   explore with first card
                 </button>
                 <button
-                  disabled={!deck[1].revealed || isNaN(parseInt(deck[1].value))}
+                  disabled={
+                    isEnd || !deck[1].revealed || isNaN(parseInt(deck[1].value))
+                  }
                   className="disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={() => explore(parseInt(deck[1].value))}
                 >
@@ -191,6 +198,7 @@ function App() {
               <button
                 className="disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={
+                  isEnd ||
                   markedPaths.length === 3 ||
                   !deck[0].revealed ||
                   isNaN(parseInt(deck[0].value))
@@ -202,21 +210,21 @@ function App() {
               <div>
                 <button
                   className="disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={markedPaths[0]?.value === undefined}
+                  disabled={isEnd || markedPaths[0]?.value === undefined}
                   onClick={() => returnToMarkedPath(0)}
                 >
                   Return to #1 path({markedPaths[0]?.value})
                 </button>
                 <button
                   className="disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={markedPaths[1]?.value === undefined}
+                  disabled={isEnd || markedPaths[1]?.value === undefined}
                   onClick={() => returnToMarkedPath(1)}
                 >
                   Return to #2 path({markedPaths[1]?.value})
                 </button>
                 <button
                   className="disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={markedPaths[2]?.value === undefined}
+                  disabled={isEnd || markedPaths[2]?.value === undefined}
                   onClick={() => returnToMarkedPath(2)}
                 >
                   Return to #3 path({markedPaths[2]?.value})
@@ -227,7 +235,7 @@ function App() {
           <div className="flex justify-around">
             <div>
               <h2>Notes ({3 - markedPaths.length} free spaces):</h2>
-              <div className="flex p-5 w-40 overflow-hidden border">
+              <div className="flex p-5 w-40 overflow-hidden overflow-x-auto border">
                 {markedPaths.map((path, index) => (
                   <Card
                     key={path.suit + path.value}
@@ -243,7 +251,7 @@ function App() {
               <h2>Score Pile:</h2>
               <div>
                 <h3>Trinkets:</h3>
-                <div className="flex p-5 w-40 overflow-hidden border">
+                <div className="flex p-5 w-40 overflow-hidden overflow-x-auto border">
                   {trinkets.map((trinket, index) => (
                     <Card
                       key={trinket.suit + trinket.value}
