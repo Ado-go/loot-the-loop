@@ -1,16 +1,20 @@
 import { useState } from "react";
 import Card from "./components/Card";
 
+type card = {
+  suit: string;
+  value: string;
+  revealed: boolean;
+};
+
 function App() {
-  const [deck, setDeck] = useState<
-    { suit: string; value: string; revealed: boolean }[]
-  >([]);
+  const [deck, setDeck] = useState<card[]>([]);
   const [gameEnd, setGameEnd] = useState(true);
   const [exploreOptions, setExploreOptions] = useState(false);
   const [markedOptions, setMarkedOptions] = useState(false);
-  const [markedPaths, setMarkedPaths] = useState<
-    { suit: string; value: string; revealed: boolean }[]
-  >([]);
+  const [markedPaths, setMarkedPaths] = useState<card[]>([]);
+  const [trinkets, setTrinkets] = useState<card[]>([]);
+  const [jewels, setJewels] = useState<card[]>([]);
 
   const suits = ["♠", "♥", "♦", "♣"];
   const values = [
@@ -99,10 +103,6 @@ function App() {
     });
   }
 
-  function startGame() {
-    setGameEnd(false);
-  }
-
   return (
     <div>
       {gameEnd && (
@@ -111,7 +111,7 @@ function App() {
           <button
             onClick={() => {
               shuffleCards();
-              startGame();
+              setGameEnd(false);
             }}
           >
             Start the game
@@ -232,8 +232,34 @@ function App() {
             </div>
             <div>
               <h2>Score Pile:</h2>
-              <div>Trinkets:</div>
-              <div>Jewels:</div>
+              <div>
+                <h3>Trinkets:</h3>
+                <div className="flex p-5 w-40 overflow-hidden border">
+                  {trinkets.map((trinket, index) => (
+                    <Card
+                      key={trinket.suit + trinket.value}
+                      suit={trinket.suit}
+                      value={trinket.value}
+                      revealed={trinket.revealed}
+                      position={index + 1}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3>Jewels:</h3>
+                <div className="flex p-5 w-40 overflow-hidden border">
+                  {jewels.map((jewel, index) => (
+                    <Card
+                      key={jewel.suit + jewel.value}
+                      suit={jewel.suit}
+                      value={jewel.value}
+                      revealed={jewel.revealed}
+                      position={index + 1}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
