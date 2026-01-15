@@ -10,8 +10,6 @@ type card = {
 function App() {
   const [deck, setDeck] = useState<card[]>([]);
   const [gameEnd, setGameEnd] = useState(true);
-  const [exploreOptions, setExploreOptions] = useState(false);
-  const [markedOptions, setMarkedOptions] = useState(false);
   const [markedPaths, setMarkedPaths] = useState<card[]>([]);
   const [trinkets, setTrinkets] = useState<card[]>([]);
   const [jewels, setJewels] = useState<card[]>([]);
@@ -111,6 +109,28 @@ function App() {
     });
   }
 
+  function evaluateLandingOnCard() {
+    if (["J", "Q", "K"].includes(deck[0].value)) {
+      alert("You lose");
+      resetGame();
+    } else if (deck[0].value === "A") {
+      setJewels((prev) => [...prev, { ...deck[0] }]);
+      setDeck((prev) => prev.slice(1, prev.length));
+    } else if (deck[0].value === "Joker") {
+      if (jewels.length === 4) {
+        alert("You win");
+        resetGame();
+      }
+    } else {
+      setTrinkets((prev) => [...prev, { ...deck[0] }]);
+      setDeck((prev) => prev.slice(1, prev.length));
+    }
+  }
+
+  if (deck[0]?.revealed) {
+    evaluateLandingOnCard();
+  }
+
   return (
     <div>
       {gameEnd && (
@@ -149,45 +169,30 @@ function App() {
               >
                 Look around(reveal top card/s)
               </button>
-              {exploreOptions ? (
-                <>
-                  <button onClick={() => setExploreOptions(false)}>
-                    Cancel
-                  </button>
-                  <button
-                    disabled={
-                      !deck[0].revealed ||
-                      isNaN(parseInt(deck[0].value)) ||
-                      (deck[parseInt(deck[0].value)].revealed &&
-                        ["J", "Q", "K"].includes(
-                          deck[parseInt(deck[0].value)].value
-                        ))
-                    }
-                    className="disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={() => explore(parseInt(deck[0].value))}
-                  >
-                    explore with first card
-                  </button>
-                  <button
-                    disabled={
-                      !deck[1].revealed ||
-                      isNaN(parseInt(deck[1].value)) ||
-                      (deck[parseInt(deck[1].value)].revealed &&
-                        ["J", "Q", "K"].includes(
-                          deck[parseInt(deck[0].value)].value
-                        ))
-                    }
-                    className="disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={() => explore(parseInt(deck[1].value))}
-                  >
-                    explore with second card
-                  </button>
-                </>
-              ) : (
-                <button onClick={() => setExploreOptions(true)}>
-                  Explore(move x-amount forward in deck)
+              <div>
+                <button
+                  disabled={
+                    !deck[0].revealed ||
+                    isNaN(parseInt(deck[0].value)) ||
+                    deck[parseInt(deck[0].value)].revealed
+                  }
+                  className="disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => explore(parseInt(deck[0].value))}
+                >
+                  explore with first card
                 </button>
-              )}
+                <button
+                  disabled={
+                    !deck[1].revealed ||
+                    isNaN(parseInt(deck[1].value)) ||
+                    deck[parseInt(deck[1].value)].revealed
+                  }
+                  className="disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => explore(parseInt(deck[1].value))}
+                >
+                  explore with second card
+                </button>
+              </div>
               <button
                 className="disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={
@@ -199,38 +204,29 @@ function App() {
               >
                 Mark path(move top card to notes)
               </button>
-              {markedOptions ? (
-                <div>
-                  <button
-                    className="disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={markedPaths[0]?.value === undefined}
-                    onClick={() => returnToMarkedPath(0)}
-                  >
-                    Return to #1 path({markedPaths[0]?.value})
-                  </button>
-                  <button
-                    className="disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={markedPaths[1]?.value === undefined}
-                    onClick={() => returnToMarkedPath(1)}
-                  >
-                    Return to #2 path({markedPaths[1]?.value})
-                  </button>
-                  <button
-                    className="disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={markedPaths[2]?.value === undefined}
-                    onClick={() => returnToMarkedPath(2)}
-                  >
-                    Return to #3 path({markedPaths[2]?.value})
-                  </button>
-                  <button onClick={() => setMarkedOptions(false)}>
-                    Cancel
-                  </button>
-                </div>
-              ) : (
-                <button onClick={() => setMarkedOptions(true)}>
-                  Return to marked path(return card from notes to top)
+              <div>
+                <button
+                  className="disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={markedPaths[0]?.value === undefined}
+                  onClick={() => returnToMarkedPath(0)}
+                >
+                  Return to #1 path({markedPaths[0]?.value})
                 </button>
-              )}
+                <button
+                  className="disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={markedPaths[1]?.value === undefined}
+                  onClick={() => returnToMarkedPath(1)}
+                >
+                  Return to #2 path({markedPaths[1]?.value})
+                </button>
+                <button
+                  className="disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={markedPaths[2]?.value === undefined}
+                  onClick={() => returnToMarkedPath(2)}
+                >
+                  Return to #3 path({markedPaths[2]?.value})
+                </button>
+              </div>
             </div>
           </div>
           <div className="flex justify-around">
