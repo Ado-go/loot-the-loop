@@ -10,6 +10,7 @@ type card = {
 function App() {
   const [deck, setDeck] = useState<card[]>([]);
   const [gameEnd, setGameEnd] = useState(true);
+  const [explored, setExplored] = useState(false);
   const [markedPaths, setMarkedPaths] = useState<card[]>([]);
   const [trinkets, setTrinkets] = useState<card[]>([]);
   const [jewels, setJewels] = useState<card[]>([]);
@@ -78,6 +79,7 @@ function App() {
   }
 
   function explore(value: number) {
+    setExplored(true);
     setDeck((prev) => {
       const toBottom = prev.slice(0, value);
       const newTop = prev.slice(value, deck.length);
@@ -112,14 +114,12 @@ function App() {
   function evaluateLandingOnCard() {
     if (["J", "Q", "K"].includes(deck[0].value)) {
       alert("You lose");
-      resetGame();
     } else if (deck[0].value === "A") {
       setJewels((prev) => [...prev, { ...deck[0] }]);
       setDeck((prev) => prev.slice(1, prev.length));
     } else if (deck[0].value === "Joker") {
       if (jewels.length === 4) {
         alert("You win");
-        resetGame();
       }
     } else {
       setTrinkets((prev) => [...prev, { ...deck[0] }]);
@@ -127,7 +127,7 @@ function App() {
     }
   }
 
-  if (deck[0]?.revealed) {
+  if (explored && deck[0]?.revealed) {
     evaluateLandingOnCard();
   }
 
