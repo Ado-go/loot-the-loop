@@ -47,7 +47,7 @@ function App() {
     const cards = suits.flatMap((suit) =>
       values.map((value) => ({ suit, value, revealed: false }))
     );
-    cards.push({ suit: "exit", value: "Joker", revealed: false });
+    cards.push({ suit: "", value: "Joker", revealed: false });
 
     shuffleArray(cards);
     setDeck(cards);
