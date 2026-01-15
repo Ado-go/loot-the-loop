@@ -15,6 +15,7 @@ function App() {
   const [markedPaths, setMarkedPaths] = useState<card[]>([]);
   const [trinkets, setTrinkets] = useState<card[]>([]);
   const [jewels, setJewels] = useState<card[]>([]);
+  const [openOptions, setOpenOptions] = useState(false);
 
   const suits = ["♠", "♥", "♦", "♣"];
   const values = [
@@ -154,6 +155,25 @@ function App() {
       )}
       {!gameEnd && (
         <div className="min-h-screen flex flex-col items-center gap-20">
+          <button
+            onClick={() => setOpenOptions(true)}
+            className="absolute top-5 right-5"
+          >
+            ⚙
+          </button>
+          {openOptions && (
+            <div className="w-screen h-screen flex flex-col items-center justify-center gap-2 bg-gray-800 absolute z-10">
+              <button
+                onClick={() => {
+                  resetGame();
+                  setOpenOptions(false);
+                }}
+              >
+                Reset Game
+              </button>
+              <button onClick={() => setOpenOptions(false)}>Close</button>
+            </div>
+          )}
           <div>
             <h2>Temple:</h2>
             <div className="flex p-5 max-w-96 overflow-hidden overflow-x-scroll border">
@@ -292,7 +312,6 @@ function App() {
               </div>
             </div>
           </div>
-          <button onClick={() => resetGame()}>reset game</button>
         </div>
       )}
     </div>
