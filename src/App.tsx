@@ -141,7 +141,7 @@ function App() {
     <div>
       {gameEnd && (
         <div className="min-h-screen flex flex-col gap-5 items-center justify-center">
-          <h1>Loot the loop card game</h1>
+          <h1 className="text-center">Loot the loop card game</h1>
           <button
             onClick={() => {
               shuffleCards();
@@ -184,6 +184,9 @@ function App() {
                   onClick={() => explore(parseInt(deck[0].value))}
                 >
                   explore with first card
+                  {deck[0].revealed &&
+                    !isNaN(parseInt(deck[0].value)) &&
+                    "(" + deck[0].value + ")"}
                 </button>
                 <button
                   disabled={
@@ -193,6 +196,9 @@ function App() {
                   onClick={() => explore(parseInt(deck[1].value))}
                 >
                   explore with second card
+                  {deck[1].revealed &&
+                    !isNaN(parseInt(deck[1].value)) &&
+                    "(" + deck[1].value + ")"}
                 </button>
               </div>
               <button
@@ -235,16 +241,19 @@ function App() {
           <div className="flex justify-around">
             <div>
               <h2>Notes ({3 - markedPaths.length} free spaces):</h2>
-              <div className="flex p-5 w-40 overflow-hidden overflow-x-auto border">
-                {markedPaths.map((path, index) => (
-                  <Card
-                    key={path.suit + path.value}
-                    suit={path.suit}
-                    value={path.value}
-                    revealed={path.revealed}
-                    position={index + 1}
-                  />
-                ))}
+              <div>
+                <h3>Paths:</h3>
+                <div className="flex p-5 w-40 overflow-hidden overflow-x-auto border">
+                  {markedPaths.map((path, index) => (
+                    <Card
+                      key={path.suit + path.value}
+                      suit={path.suit}
+                      value={path.value}
+                      revealed={path.revealed}
+                      position={index + 1}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
             <div>
