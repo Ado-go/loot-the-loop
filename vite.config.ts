@@ -9,5 +9,6 @@ export default defineConfig({
       usePolling: true,
     },
   },
+  base: "/loot-the-loop/",
   plugins: [react(), tailwindcss()],
 });
