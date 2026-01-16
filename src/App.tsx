@@ -139,7 +139,7 @@ function App() {
   }
 
   return (
-    <div>
+    <>
       {gameEnd && (
         <div className="min-h-screen flex flex-col gap-5 items-center justify-center">
           <h1 className="text-center">Loot the loop card game</h1>
@@ -154,15 +154,15 @@ function App() {
         </div>
       )}
       {!gameEnd && (
-        <div className="min-h-screen flex flex-col items-center gap-20">
+        <div className="min-h-screen flex flex-col pt-5 items-center gap-10">
           <button
             onClick={() => setOpenOptions(true)}
-            className="absolute z-5 top-5 right-5"
+            className="absolute flex justify-center items-center w-10 h-10 z-5 top-5 right-5"
           >
-            ⚙
+            <p>⚙</p>
           </button>
           {openOptions && (
-            <div className="w-screen h-screen flex flex-col items-center justify-center gap-2 bg-gray-800 absolute z-10">
+            <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-gray-800 absolute z-10">
               <button
                 onClick={() => {
                   resetGame();
@@ -174,9 +174,9 @@ function App() {
               <button onClick={() => setOpenOptions(false)}>Close</button>
             </div>
           )}
-          <div>
-            <h2>Temple:</h2>
-            <div className="flex p-5 max-w-96 overflow-hidden overflow-x-scroll border">
+          <div className="flex flex-col">
+            <h2 className="text-center">Temple</h2>
+            <div className="flex p-5 max-w-90 overflow-hidden overflow-x-scroll border">
               {deck.map((card, index) => (
                 <Card
                   key={card.suit + card.value}
@@ -187,17 +187,17 @@ function App() {
                 />
               ))}
             </div>
-            <div className="flex flex-col items-center">
-              <div className="max-w-96">
+            <div className="max-w-90 flex flex-col items-center">
+              <div>
                 <button
-                  className="w-96 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className=" disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isEnd || deck[0].revealed}
                   onClick={() => lookAround()}
                 >
                   Look around(reveal top card/s)
                 </button>
               </div>
-              <div className=" flex max-w-96">
+              <div className="flex">
                 <button
                   disabled={
                     isEnd || !deck[0].revealed || isNaN(parseInt(deck[0].value))
@@ -223,9 +223,9 @@ function App() {
                     "(" + deck[1].value + ")"}
                 </button>
               </div>
-              <div className="max-w-96">
+              <div>
                 <button
-                  className="w-96 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={
                     isEnd ||
                     markedPaths.length === 3 ||
@@ -237,23 +237,23 @@ function App() {
                   Mark path(move top card to notes)
                 </button>
               </div>
-              <div className="max-w-96">
+              <div className="flex">
                 <button
-                  className="w-96 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isEnd || markedPaths[0]?.value === undefined}
                   onClick={() => returnToMarkedPath(0)}
                 >
                   Return to #1 path({markedPaths[0]?.value})
                 </button>
                 <button
-                  className="w-96 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isEnd || markedPaths[1]?.value === undefined}
                   onClick={() => returnToMarkedPath(1)}
                 >
                   Return to #2 path({markedPaths[1]?.value})
                 </button>
                 <button
-                  className="w-96 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isEnd || markedPaths[2]?.value === undefined}
                   onClick={() => returnToMarkedPath(2)}
                 >
@@ -262,7 +262,7 @@ function App() {
               </div>
             </div>
           </div>
-          <div className="flex justify-around">
+          <div className="flex gap-5 justify-around">
             <div>
               <h2>Notes ({3 - markedPaths.length} free spaces):</h2>
               <div>
@@ -297,7 +297,7 @@ function App() {
                 </div>
               </div>
               <div>
-                <h3>Jewels:</h3>
+                <h3 className="text-blue-400">Jewels:</h3>
                 <div className="flex p-5 w-40 overflow-hidden overflow-x-auto border">
                   {jewels.map((jewel, index) => (
                     <Card
@@ -314,7 +314,7 @@ function App() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
