@@ -154,7 +154,7 @@ function App() {
         </div>
       )}
       {!gameEnd && (
-        <div className="min-h-screen flex flex-col items-center gap-10">
+        <div className="min-h-screen flex flex-col gap-10">
           {openOptions ? (
             <div className="w-full h-full flex flex-col items-center justify-center gap-2 bg-gray-800 absolute z-10">
               <button
@@ -175,9 +175,9 @@ function App() {
               >
                 <p>⚙</p>
               </button>
-              <div className="flex flex-col pt-2">
+              <div className="flex flex-col items-center pt-2">
                 <h2 className="text-center">Temple</h2>
-                <div className="flex p-5 max-w-86 overflow-hidden overflow-x-scroll border">
+                <div className="flex p-5 w-full max-w-80 overflow-hidden overflow-x-scroll border">
                   {deck.map((card, index) => (
                     <Card
                       key={card.suit + card.value}
@@ -188,10 +188,10 @@ function App() {
                     />
                   ))}
                 </div>
-                <div className="max-w-86 flex flex-col items-center">
+                <div className="w-full max-w-80 flex flex-col">
                   <div>
                     <button
-                      className=" disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={isEnd || deck[0].revealed}
                       onClick={() => lookAround()}
                     >
@@ -230,7 +230,7 @@ function App() {
                   </div>
                   <div>
                     <button
-                      className="disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={
                         isEnd ||
                         markedPaths.length === 3 ||
@@ -242,7 +242,7 @@ function App() {
                       Mark path(move top card to notes)
                     </button>
                   </div>
-                  <div className="flex">
+                  <div className="flex flex-col">
                     <button
                       className="disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={isEnd || markedPaths[0]?.value === undefined}
@@ -267,12 +267,12 @@ function App() {
                   </div>
                 </div>
               </div>
-              <div className="flex gap-5 justify-around">
+              <div className="flex gap-5 justify-center">
                 <div>
                   <h2>Notes ({3 - markedPaths.length} free spaces):</h2>
                   <div>
                     <h3>Paths:</h3>
-                    <div className="flex p-5 w-40 overflow-hidden overflow-x-auto border">
+                    <div className="flex p-5 w-full max-w-40 overflow-hidden overflow-x-auto border">
                       {markedPaths.map((path, index) => (
                         <Card
                           key={path.suit + path.value}
@@ -289,7 +289,7 @@ function App() {
                   <h2>Score Pile:</h2>
                   <div>
                     <h3>Trinkets:</h3>
-                    <div className="flex p-5 w-40 overflow-hidden overflow-x-auto border">
+                    <div className="flex p-5 w-full max-w-40 overflow-hidden overflow-x-auto border">
                       {trinkets.map((trinket, index) => (
                         <Card
                           key={trinket.suit + trinket.value}
@@ -303,7 +303,7 @@ function App() {
                   </div>
                   <div>
                     <h3 className="text-blue-400">Jewels:</h3>
-                    <div className="flex p-5 w-40 overflow-hidden overflow-x-auto border">
+                    <div className="flex p-5 w-full max-w-40 overflow-hidden overflow-x-auto border">
                       {jewels.map((jewel, index) => (
                         <Card
                           key={jewel.suit + jewel.value}
