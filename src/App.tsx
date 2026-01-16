@@ -175,7 +175,7 @@ function App() {
               >
                 <p>⚙</p>
               </button>
-              <div className="flex flex-col">
+              <div className="flex flex-col pt-2">
                 <h2 className="text-center">Temple</h2>
                 <div className="flex p-5 max-w-86 overflow-hidden overflow-x-scroll border">
                   {deck.map((card, index) => (
