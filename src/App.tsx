@@ -46,7 +46,7 @@ function App() {
 
   function shuffleCards() {
     const cards = suits.flatMap((suit) =>
-      values.map((value) => ({ suit, value, revealed: false }))
+      values.map((value) => ({ suit, value, revealed: false })),
     );
     cards.push({ suit: "", value: "Joker", revealed: false });
 
@@ -68,14 +68,14 @@ function App() {
       if (!deck[1].revealed) {
         setDeck(
           deck.map((card, index) =>
-            index < 2 ? { ...card, revealed: true } : card
-          )
+            index < 2 ? { ...card, revealed: true } : card,
+          ),
         );
       } else {
         setDeck(
           deck.map((card, index) =>
-            index < 1 ? { ...card, revealed: true } : card
-          )
+            index < 1 ? { ...card, revealed: true } : card,
+          ),
         );
       }
     }
